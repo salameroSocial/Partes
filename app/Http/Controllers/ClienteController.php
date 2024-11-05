@@ -9,7 +9,11 @@ class ClienteController extends Controller
 {
     public function index()
     {
-        $clientes = Cliente::all();
+        // Antiguo
+        // $clientes = Cliente::all();
+        // Obteniendo 10 clientes por página
+        $clientes = Cliente::paginate(10);
+
         return view('clientes.index', compact('clientes'));
     }
 
@@ -62,4 +66,3 @@ class ClienteController extends Controller
             ->with('success', 'Cliente eliminado exitosamente.');
     }
 }
-

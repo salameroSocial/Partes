@@ -73,14 +73,15 @@ class EmpleadoController extends Controller
         $request->validate([
             'nombre' => 'required',
             'apellido' => 'required',
-            // Agrega aquí las validaciones necesarias para tus campos
+            'rango' => 'required',
         ]);
 
-        $empleado->update($request->all());
+        $empleado->update($request->only(['nombre', 'apellido', 'rango', 'precio_hora']));
 
         return redirect()->route('empleados.index')
             ->with('success', 'Empleado actualizado exitosamente.');
     }
+
 
     /**
      * Remove the specified resource from storage.

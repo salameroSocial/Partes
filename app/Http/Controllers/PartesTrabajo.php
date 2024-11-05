@@ -29,7 +29,21 @@ class PartesTrabajo extends Controller
         return view('partes.sacarHoja', compact('clientes', 'departamentos', 'trabajadores'));
     }
 
+    public function prueba()
+    {
+        // $empleados = Parte::with('trabajador')->get(); // 'trabajador' es el nombre de la relación definida en el modelo Parte
 
+        return view('pruebas.prueba');
+        // return view('partes.sacarHoja', compact('clientes', 'departamentos', 'trabajadores'));
+    }
+
+    public function brigada()
+    {
+        // $empleados = Parte::with('trabajador')->get(); // 'trabajador' es el nombre de la relación definida en el modelo Parte
+
+        return view('partes.brigada');
+        // return view('partes.sacarHoja', compact('clientes', 'departamentos', 'trabajadores'));
+    }
 
 
     public function create()
@@ -151,6 +165,10 @@ class PartesTrabajo extends Controller
         // return view('partes.edit', compact('parte'));
     }
 
+    public function works()
+    {
+        return view('partes.brigada');
+    }
     public function borrar(Parte $parte)
     {
         // Aquí debes eliminar la parte específica de la base de datos
@@ -359,5 +377,13 @@ class PartesTrabajo extends Controller
         }
 
         return response()->json($partes);
+    }
+
+    public function mostrarPorTipo($tipo)
+    {
+        // Obtén los partes filtrados por el tipo
+        $partes = Parte::where('tipo_servicio', $tipo)->get();
+
+        return view('partes.index', compact('partes', 'tipo'));
     }
 }

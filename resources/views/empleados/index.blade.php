@@ -1,39 +1,78 @@
 <x-app-layout>
-    <div class="w-full">
-        <x-slot name="header">
-            <div class="flex flex-col items-center justify-evenly">
-                <h1 class="text-2xl font-bold mb-4">Lista de Empleados</h1>
-                <a href="{{ route('empleados.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md mb-4">Crear Empleado</a>
+
+    <div class="container mx-auto p-6 space-y-8">
+        <h1 class="text-4xl font-bold text-center mb-10">Gestión de Empleados</h1>
+
+        <!-- Flex ajustado para poner el botón debajo de la barra de búsqueda -->
+        <div class="flex flex-col justify-between items-center space-y-4 mb-6">
+            <!-- Barra de búsqueda -->
+            <!-- <input type="text" id="searchInput" placeholder="Buscar empleados..."
+                class="max-w-sm transition-all duration-300 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
+                style="transition: width 0.3s ease-in-out; width: 300px;"> -->
+
+            <!-- Botón de "Añadir Empleado" en negro -->
+            <a href="{{ route('empleados.create') }}" class="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800">
+                <svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Añadir Empleado
+            </a>
+        </div>
+
+        <div x-data="{ view: 'grid' }">
+            <!-- Botones para alternar la vista -->
+            <div class="mb-6">
+                <button @click="view = 'grid'" :class="{ 'bg-black text-white': view === 'grid' }" class="px-4 py-2 rounded-l-md border">Vista de Cuadrícula</button>
+                <button @click="view = 'list'" :class="{ 'bg-black text-white': view === 'list' }" class="px-4 py-2 rounded-r-md border">Vista de Lista</button>
             </div>
-        </x-slot>
-        <div class="container mx-auto px-4 hidden sm:block">
-            @if ($empleados->isEmpty())
-            <p class="text-center text-red-500 font-bold">No hay empleados</p>
-            @else
-            <div class="overflow-x-auto">
-                <table class="w-full border-collapse border border-gray-300 bg-white">
+
+            <!-- Vista de cuadrícula -->
+            <div x-show="view === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach($empleados as $empleado)
+                <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center space-y-4">
+                    <img src="{{ $empleado->avatar }}" alt="{{ $empleado->nombre }} {{ $empleado->apellido }}" class="w-24 h-24 rounded-full object-cover">
+                    <div class="text-center">
+                        <h2 class="text-xl font-semibold">{{ $empleado->nombre }} {{ $empleado->apellido }}</h2>
+                        <p class="text-sm text-gray-500">{{ $empleado->rango }}</p>
+                        <p class="text-lg font-medium mt-2">${{ $empleado->precio_hora }}/hora</p>
+                    </div>
+                    <div class="flex space-x-2 mt-4">
+                        <a href="{{ route('empleados.edit', $empleado->id) }}" class="px-3 py-1 bg-gray-800 text-white rounded-md hover:bg-gray-600">Editar</a>
+                        <form action="{{ route('empleados.destroy', $empleado->id) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600" onclick="return confirm('¿Estás seguro de que quieres eliminar este empleado?')">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
+            <!-- Vista de lista -->
+            <div x-show="view === 'list'" class="overflow-x-auto">
+                <table class="w-full">
                     <thead>
-                        <tr>
-                            <th class="px-4 py-2">Nombre</th>
-                            <th class="px-4 py-2">Apellido</th>
-                            <th class="px-4 py-2">Rango</th>
-                            <th class="px-4 py-2">Precio Hora</th>
-                            <th class="px-4 py-2">Acciones</th>
+                        <tr class="border-b">
+                            <th class="text-left p-2">Nombre</th>
+                            <th class="text-left p-2">Apellido</th>
+                            <th class="text-left p-2">Rango</th>
+                            <th class="text-left p-2">Precio/Hora</th>
+                            <th class="text-left p-2">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($empleados as $empleado)
-                        <tr>
-                            <td class="border px-4 py-2">{{ $empleado->nombre }}</td>
-                            <td class="border px-4 py-2">{{ $empleado->apellidos }}</td>
-                            <td class="border px-4 py-2">{{ $empleado->rango }}</td>
-                            <td class="border px-4 py-2">{{ $empleado->precio_hora }}</td>
-                            <td class="border px-4 py-2 flex flex-col md:flex-row justify-center">
-                                <a href="{{ route('empleados.edit', $empleado->id) }}" class="ml-0 md:ml-2 mt-2 md:mt-0 text-yellow-100 hover:text-white hover:bg-yellow-400 bg-yellow-500 px-4 py-2 rounded">Editar</a>
+                        @foreach($empleados as $empleado)
+                        <tr class="border-b">
+                            <td class="p-2">{{ $empleado->nombre }}</td>
+                            <td class="p-2">{{ $empleado->apellido }}</td>
+                            <td class="p-2">{{ $empleado->rango }}</td>
+                            <td class="p-2">${{ $empleado->precio_hora }}</td>
+                            <td class="p-2">
+                                <a href="{{ route('empleados.edit', $empleado->id) }}" class="px-3 py-1 bg-gray-800 text-white rounded-md hover:bg-gray-600 mr-2">Editar</a>
                                 <form action="{{ route('empleados.destroy', $empleado->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="ml-0 md:ml-2 mt-2 md:mt-0 text-red-100 hover:text-white hover:bg-red-400 bg-red-500 px-4 py-2 rounded">Eliminar</button>
+                                    <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600" onclick="return confirm('¿Estás seguro de que quieres eliminar este empleado?')">Eliminar</button>
                                 </form>
                             </td>
                         </tr>
@@ -41,37 +80,36 @@
                     </tbody>
                 </table>
             </div>
-            @endif
-        </div>
-        <div class="block sm:hidden">
-            <ul>
-                @foreach ($empleados as $empleado)
-                <div class="bg-gray-300 border-4 border-white text-center">
-                    <li class="border px-4 py-2">
-                        <p>Empleado:</p>
-                        <p class="font-bold">{{ $empleado->nombre }} {{ $empleado->apellidos }}</p>
-                    </li>
-                    <li class="border px-4 py-2">
-                        <p>Rango:</p>
-                        <p class="font-bold">{{ $empleado->rango }}</p>
-                    </li>
-                    <li class="border px-4 py-2">
-                        <p>Precio/h:</p>
-                        <p class="font-bold">{{ $empleado->precio_hora }}€</p>
-                    </li>
-                    <li class="border px-4 py-2 flex flex-col md:flex-row justify-center">
-                        <a href="{{ route('empleados.edit', $empleado->id) }}" class="ml-0 md:ml-2 mt-2 md:mt-0 text-yellow-100 hover:text-white hover:bg-yellow-400 bg-yellow-500 px-4 py-2 rounded">Editar</a>
-                        <form action="{{ route('empleados.destroy', $empleado->id) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="ml-0 md:ml-2 mt-2 md:mt-0 text-red-100 hover:text-white hover:bg-red-400 bg-red-500 px-4 py-2 rounded">Eliminar</button>
-                        </form>
-                    </li>
-
-                    <hr>
-                </div>
-                @endforeach
-            </ul>
         </div>
     </div>
+
+    @push('scripts')
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const empleados = document.querySelectorAll('.grid > div, tbody > tr');
+
+            // Agrandar la barra de búsqueda cuando se haga focus
+            searchInput.addEventListener('focus', function() {
+                searchInput.style.width = '100%'; // Aumenta al 100% de su contenedor
+            });
+
+            // Reducir el tamaño de la barra de búsqueda cuando se quite el focus
+            searchInput.addEventListener('blur', function() {
+                searchInput.style.width = '300px'; // Vuelve al tamaño original
+            });
+
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+
+                empleados.forEach(function(empleado) {
+                    const text = empleado.textContent.toLowerCase();
+                    empleado.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+        });
+    </script>
+    @endpush
+
 </x-app-layout>

@@ -13,10 +13,13 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
+    @viteReactRefresh
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- Alertas custom (:) --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Esto es del alpine -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
 </head>
 
@@ -25,17 +28,18 @@
         @include('layouts.navigation')
 
         @if (isset($header))
-            <header class="bg-white dark:bg-gray-800 shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
+        <header class="bg-white dark:bg-gray-800 shadow">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                {{ $header }}
+            </div>
+        </header>
         @endif
 
         <main>
             {{ $slot }}
         </main>
     </div>
+    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 
 </html>

@@ -1,31 +1,52 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex flex-col items-center justify-evenly sm:flex-row sm:justify-between">
-            <h2 class="text-2xl font-bold">Clientes</h2>
-            <a href="{{ route('clientes.create') }}" class="inline-block px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 mt-4 sm:mt-0">Crear Cliente</a>
+
+    <div class="container mx-auto py-10">
+        <!-- Ajustar el título y el botón para ser responsive -->
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold mb-4 sm:mb-0">Clientes de la Empresa</h1>
+            <a href="{{ route('clientes.create') }}" class="px-4 py-2 bg-black text-white rounded hover:bg-black">
+                <svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Crear Nuevo Cliente
+            </a>
         </div>
-    </x-slot>
-    <div class="container mx-auto px-4 py-6 hidden sm:block">
-        <div class="overflow-x-auto">
-            <table class="min-w-full border border-gray-300 bg-white">
+
+        <!-- Tabla solo con nombre y acciones -->
+        <div class="overflow-x-auto bg-white shadow-md rounded">
+            <table class="min-w-full leading-normal">
                 <thead>
                     <tr>
-                        <th class="px-4 py-2 border border-gray-300">ID</th>
-                        <th class="px-4 py-2 border border-gray-300">Nombre</th>
-                        <th class="px-4 py-2 border border-gray-300">Acciones</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Nombre
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Acciones
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($clientes as $cliente)
+                    @foreach($clientes as $cliente)
                     <tr>
-                        <td class="px-4 py-2 border border-gray-300">{{ $cliente->id }}</td>
-                        <td class="px-4 py-2 border border-gray-300">{{ $cliente->nombre }}</td>
-                        <td class="px-4 py-2 border border-gray-300 flex flex-col sm:flex-row justify-center">
-                            <a href="{{ route('clientes.edit', $cliente->id) }}" class="mb-2 sm:mb-0 sm:mr-2 text-yellow-100 hover:text-white hover:bg-yellow-400 bg-yellow-500 px-4 py-2 rounded">Editar</a>
-                            <form action="{{ route('clientes.destroy', $cliente->id) }}" method="POST" class="inline">
+                        <!-- Nombre del cliente -->
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p class="text-gray-900 whitespace-no-wrap">{{ $cliente->nombre }}</p>
+                        </td>
+                        <!-- Botones de acción alineados con el nombre -->
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm flex items-center space-x-4">
+                            <a href="{{ route('clientes.edit', $cliente->id) }}" class="text-yellow-500 hover:text-blue-900">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                            </a>
+                            <form action="{{ route('clientes.destroy', $cliente->id) }}" method="POST" class="inline-block">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-100 hover:text-white hover:bg-red-400 bg-red-500 px-4 py-2 rounded">Eliminar</button>
+                                <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('¿Estás seguro de que quieres eliminar este cliente?')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
                             </form>
                         </td>
                     </tr>
@@ -33,53 +54,10 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div id="popup" style="display: none;">
-        <h2>Información del Cliente</h2>
-        <p>Nombre: Juan Pérez</p>
-        <p>Correo Electrónico: juan@example.com</p>
-        <button id="cerrarPopup">Cerrar</button>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var botonMostrar = document.getElementById('mostrarPopup');
-            var popup = document.getElementById('popup');
-            var botonCerrar = document.getElementById('cerrarPopup');
 
-            botonMostrar.addEventListener('click', function() {
-                popup.style.display = 'block';
-            });
-
-            botonCerrar.addEventListener('click', function() {
-                popup.style.display = 'none';
-            });
-        });
-    </script>
-    <div class="block sm:hidden">
-        <ul>
-            @foreach ($clientes as $cliente)
-            <div class="bg-gray-300 border-4 border-white text-center">
-                <tr>
-                    <li class="px-4 py-2 border border-gray-300">
-                        <p>Cliente Nº:</p>
-                        <p class="font-bold">{{ $cliente->id }}</p>
-                    </li>
-                    <li class="px-4 py-2 border border-gray-300">
-                        <p>Nombre:</p>
-                        <p class="font-bold">{{ $cliente->nombre }}</p>
-                    </li>
-                    <li class="px-4 py-2 border border-gray-300 flex flex-col sm:flex-row justify-center">
-                        <a href="{{ route('clientes.edit', $cliente->id) }}" class="mb-2 sm:mb-0 sm:mr-2 text-yellow-100 hover:text-white hover:bg-yellow-400 bg-yellow-500 px-4 py-2 rounded">Editar</a>
-                        <form action="{{ route('clientes.destroy', $cliente->id) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-100 hover:text-white hover:bg-red-400 bg-red-500 px-4 py-2 rounded">Eliminar</button>
-                        </form>
-                    </li>
-                </tr>
-            </div>
-            @endforeach
-        </ul>
+        <!-- Mostrar los enlaces de paginación -->
+        <div class="m-4">
+            {{ $clientes->links() }}
+        </div>
     </div>
-
 </x-app-layout>

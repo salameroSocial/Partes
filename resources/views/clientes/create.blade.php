@@ -1,33 +1,32 @@
 <x-app-layout>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{-- {{ __('Creacion de cliente') }} --}}
-                    <h2 class="text-2xl">Registro de cliente:</h2>
-                </div>
-
-                {{-- <div class="container mx-auto bg-white">
-        <h2 class="text-2xl font-semibold my-6">Crear Cliente</h2>
-    </div> --}}
-
-                <div class="container mx-auto w-full sm:w-2/5 bg-gray-200 p-5 rounded-xl">
-                    <h2 class="text-2xl">Formulario</h2><br>
+    <div class="container mx-auto py-10">
+        <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden md:max-w-lg">
+            <div class="md:flex">
+                <div class="w-full px-6 py-8">
+                    <h2 class="text-center text-2xl font-bold text-gray-700 mb-6">Añadir Nuevo Cliente</h2>
                     <form action="{{ route('clientes.store') }}" method="POST">
                         @csrf
-                        <div class="mb-4">
-                            <label for="nombre" class="block">Nombre:</label>
-                            <input type="text" name="nombre" id="nombre" class="border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 w-full">
+                        <div class="mb-6">
+                            <label for="nombre" class="block mb-2 text-sm font-medium text-gray-700">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" required
+                                class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-100 focus:border-blue-300"
+                                placeholder="Ingrese el nombre del cliente">
+                            @error('nombre')
+                            <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <!-- Agrega aquí los campos adicionales si es necesario -->
-                        <div class="mx-auto flex flex-col justify-center items-center w-2/5">
-                            <br>
-                            <button type="submit" class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Crear</button>
-                            <br><a href="{{ route('clientes.index') }}" class="w-full text-center px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-300">Cancelar</a>
+                        <div class="flex items-center justify-between mt-6">
+                            <button type="submit"
+                                class="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-500 focus:outline-none focus:bg-green-600">
+                                Guardar
+                            </button>
+                            <a href="{{ route('clientes.index') }}"
+                                class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:bg-gray-400">
+                                Cancelar
+                            </a>
                         </div>
                     </form>
                 </div>
-                <br><br>
             </div>
         </div>
     </div>

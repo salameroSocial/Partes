@@ -52,12 +52,12 @@
                 <p class="text-lg text-gray-700 mb-8">Identifícate para continuar.</p>
                 <div>
                     @auth
-                        <a href="{{ route('dashboard') }}"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Dashboard</a>
+                    <a href="{{ route('dashboard') }}"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Dashboard</a>
                     @else
-                        <a href="{{ route('login') }}"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Iniciar
-                            Sesión</a>
+                    <a href="{{ route('login') }}"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Iniciar
+                        Sesión</a>
                     @endauth
                 </div>
             </div>
