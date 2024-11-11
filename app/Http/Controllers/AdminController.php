@@ -84,6 +84,25 @@ class AdminController extends Controller
         $usuarios = User::with('roles')->get();
         return view('admin.usuarios.index', compact('usuarios'));
     }
+    public function indexUsuariosFront(Request $request)
+    {
+        // Obtiene el término de búsqueda de la consulta
+        $search = $request->query('search');
+
+        // Consulta a la base de datos
+        if ($search) {
+            // Filtra los usuarios que coinciden con el término de búsqueda
+            $users = User::where('name', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%")
+                ->get();
+        } else {
+            // Si no hay término de búsqueda, retorna todos los usuarios
+            $users = User::all();
+        }
+
+        // Devuelve la respuesta en formato JSON
+        return response()->json($users);
+    }
 
     public function updateUsuarios(Request $request, $id)
     {
@@ -107,7 +126,24 @@ class AdminController extends Controller
     }
 
 
+    public function indexCharts()
+    {
+        $labels = ['Enero', 'Febrero', 'Marzo', 'Abril'];
+        $data = [10, 20, 30, 40];
 
+        return view('admin.charts.index', compact('labels', 'data'));
+    }
+
+    public function chartSpecial(Request $request)
+    {
+        // Suponiendo que tienes un modelo User y una columna created_at
+        $registrations = User::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        return response()->json($registrations);
+    }
 
     public function indexRoles()
     {

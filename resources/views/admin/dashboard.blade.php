@@ -45,7 +45,7 @@
             <button @click="activeTab = 'configuracion'" :class="{ 'bg-blue-500 text-white': activeTab === 'configuracion' }" class="px-4 py-2 rounded-md">Configuración</button>
         </nav>
 
-        <div x-show="activeTab === 'usuarios'" class="bg-white rounded-lg shadow p-6">
+        <!-- <div x-show="activeTab === 'usuarios'" class="bg-white rounded-lg shadow p-6">
             <h2 class="text-xl font-bold mb-4">Gestión de Usuarios</h2>
             <p class="text-gray-600 mb-4">Administra los usuarios de la aplicación</p>
             <div class="flex space-x-2 mb-4">
@@ -54,7 +54,8 @@
             </div>
             <a href="{{ route('admin.usuarios.crear') }}" class="inline-block px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 mr-2">Crear Nuevo Usuario</a>
             <a href="{{ route('admin.usuarios.index') }}" class="inline-block px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">Ver Todos los Usuarios</a>
-        </div>
+        </div> -->
+        <div id="searchBar"></div>
 
         <div x-show="activeTab === 'partes'" class="bg-white rounded-lg shadow p-6">
             <h2 class="text-xl font-bold mb-4">Gestión de Partes</h2>
@@ -123,45 +124,7 @@
         </a>
     </div>
 </div>
-<div class="container mx-auto p-6">
-    <h1 class="text-4xl font-bold text-center mb-10">Administración de Usuarios</h1>
 
-    <!-- Botón para abrir el modal -->
-    <button @click="open = true" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-        Ver Usuarios
-    </button>
-
-    <!-- Modal de Usuarios -->
-    <div x-data="{ open: false }" x-cloak>
-        <!-- Modal Overlay -->
-        <div x-show="open" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <!-- Modal Content -->
-            <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
-                <!-- Botón para cerrar el modal -->
-                <button @click="open = false" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900">&times;</button>
-
-                <h2 class="text-xl font-semibold mb-4">Lista de Usuarios</h2>
-
-                <!-- Listado de usuarios -->
-                <ul>
-                    @foreach($usuarios as $usuario)
-                    <li class="mb-3 flex justify-between items-center">
-                        <span>{{ $usuario->name }}</span>
-                        <div>
-                            <button @click="editUser({{ $usuario->id }})" class="px-3 py-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">
-                                Editar
-                            </button>
-                            <button @click="deleteUser({{ $usuario->id }})" class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600">
-                                Borrar
-                            </button>
-                        </div>
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>

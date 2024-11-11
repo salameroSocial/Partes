@@ -21,6 +21,22 @@ use Illuminate\Support\Facades\Route;
 \                                                                          */
 
 
+
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+
+// Ruta para mostrar el formulario de inicio de sesión
+Route::get('login', [AuthenticatedSessionController::class, 'create'])
+    ->name('login');
+
+// Ruta para manejar el inicio de sesión
+Route::post('login', [AuthenticatedSessionController::class, 'store']);
+
+// Ruta para manejar el cierre de sesión
+Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
+
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -91,6 +107,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('admin/fields/{id}', [FieldController::class, 'destroy'])->name('fields.destroy');
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/usuarios', [AdminController::class, 'indexUsuarios'])->name('admin.usuarios.index');
+    Route::get('/admin/usuarios/all', [AdminController::class, 'indexUsuariosFront'])->name('admin.usuarios.all');
     Route::get('/usuarios/{id}/edit', [AdminController::class, 'editUsuarios'])->name('admin.usuarios.edit');
     Route::put('/usuarios/{id}', [AdminController::class, 'updateUsuarios'])->name('admin.usuarios.update');
     Route::delete('/usuarios/{id}', [AdminController::class, 'destroyUsuarios'])->name('admin.usuarios.destroy');
@@ -102,6 +119,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/roles/show', [AdminController::class, 'createUsuario'])->name('admin.roles.store');
     Route::get('/admin/roles/edit', [AdminController::class, 'createUsuario'])->name('admin.roles.edit');
     Route::delete('/admin/roles/delete', [AdminController::class, 'createUsuario'])->name('admin.roles.destroy');
+    Route::get('/admin/charts', [AdminController::class, 'indexCharts'])->name('admin.charts');
+    Route::get('/admin/chart/index', [AdminController::class, 'chartSpecial'])->name('admin.chart.index');
 });
 
 Route::get('/dashboard', function () {

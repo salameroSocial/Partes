@@ -11,7 +11,7 @@ class FieldController extends Controller
     {
         // Obtener todos los campos adicionales
         $fields = Field::all();
-        return view('partes.admin', compact('fields'));
+        return view('admin.partes.fields', compact('fields'));
     }
 
     public function store(Request $request)

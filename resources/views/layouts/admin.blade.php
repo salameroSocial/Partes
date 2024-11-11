@@ -7,6 +7,11 @@
     <title>@yield('title', 'Panel Admin')</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.5/cdn.min.js" defer></script>
+    <!-- Esto es de chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    @viteReactRefresh
+    @vite('resources/js/app.js')
     <style>
         [x-cloak] {
             display: none !important;
@@ -54,6 +59,9 @@
                     </x-admin-link>
                     <x-admin-link :href="route('fields.index')" :active="request()->routeIs('fields.index')">
                         {{ __('Campos del form') }}
+                    </x-admin-link>
+                    <x-admin-link :href="route('admin.charts')" :active="request()->routeIs('admin.charts')">
+                        {{ __('Grafikos') }}
                     </x-admin-link>
 
 

@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container mx-auto">
-    <div id="app">Container de las cositas</div>
+    <div id="newUser"></div>
     <div class="mb-6">
         <h1 class="text-3xl font-bold mb-4">Lista de Usuarios</h1>
 
